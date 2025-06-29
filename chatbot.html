@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonderland Park - Online Ticketing System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(59,130,246,0.8) 0%, rgba(16,185,129,0.8) 100%);
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .chatbot-container {
+            transition: all 0.3s ease;
+            transform: translateY(100%);
+        }
+        
+        .chatbot-container.active {
+            transform: translateY(0);
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Floating Chatbot Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button id="chatbotFloatingButton" class="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg transition-all duration-200 transform hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+        </button>
+    </div>
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9780d0b8-0bbe-4b27-8784-1bc48b6bb728.png" alt="Wonderland Park official logo" class="h-12">
+                    </div>
+                    <div class="hidden md:ml-8 md:flex md:space-x-8">
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Home
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Attractions
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Events
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                Experience the Magic of Wonderland Park
+            </h1>
+            <p class="mt-6 text-xl text-indigo-100 max-w-3xl mx-auto">
+                Book your tickets online today and skip the lines! Our chatbot assistant is available 24/7 to help with any questions.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Ticket Selection -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Select Your Tickets
+            </h2>
+            <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+                Choose from our range of ticket options to suit your adventure needs.
+            </p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+            <!-- Adult Ticket -->
+            <div class="ticket-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out">
+                <div class="px-6 py-4">
+                    <div class="font-bold text-xl mb-2 text-indigo-600">Adult Day Pass</div>
+                    <p class="text-gray-700 mb-4">
+                        Full-day access to all rides and attractions for adults ages 13+
+                    </p>
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-4xl font-extrabold text-gray-900">Rs<span class="text-gray-900">400</span></span>
+                        <span class="ml-2 text-gray-500"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label for="adult-qty" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                        <select id="adult-qty" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option>0</option>
+                            <option selected>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5+</option>
+                        </select>
+                    </div>
+                    <button onclick="addToCart('adult', 400)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Child Ticket -->
+            <div class="ticket-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out">
+                <div class="px-6 py-4">
+                    <div class="font-bold text-xl mb-2 text-emerald-600">Child Day Pass</div>
+                    <p class="text-gray-700 mb-4">
+                        Full-day access to all rides and attractions for children ages 3-12
+                    </p>
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-4xl font-extrabold text-gray-900">Rs200</span>
+                        <span class="ml-2 text-gray-500"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label for="child-qty" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                        <select id="child-qty" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option>0</option>
+                            <option>1</option>
+                            <option selected>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5+</option>
+                        </select>
+                    </div>
+                    <button onclick="addToCart('child', 200)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Senior Ticket -->
+            <div class="ticket-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out">
+                <div class="px-6 py-4">
+                    <div class="font-bold text-xl mb-2 text-amber-600">Senior Day Pass</div>
+                    <p class="text-gray-700 mb-4">
+                        Full-day access to all rides and attractions for seniors ages 65+
+                    </p>
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-4xl font-extrabold text-gray-900">Rs300</span>
+                        <span class="ml-2 text-gray-500"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label for="senior-qty" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                        <select id="senior-qty" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option selected>3</option>
+                            <option>4</option>
+                            <option>5+</option>
+                        </select>
+                    </div>
+                    <button onclick="addToCart('senior', 300)" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping Cart -->
+        <div id="cart" class="mt-12 bg-white shadow-md rounded-lg p-6 hidden">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Your Order</h3>
+            <div id="cart-items" class="divide-y divide-gray-200">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                <div class="flex justify-between">
+                    <span class="text-lg font-medium text-gray-900">Subtotal</span>
+                    <span id="subtotal" class="text-lg font-medium text-gray-900">Rs00</span>
+                </div>
+                <div class="mt-2 text-sm text-gray-500">
+                    Taxes and fees will be calculated during checkout.
+                </div>
+                <div class="mt-6">
+                    <button onclick="proceedToCheckout()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div id="paymentModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Payment Information</h3>
+                                <form id="paymentForm" class="space-y-6">
+                                    <div>
+                                        <label for="card-number" class="block text-sm font-medium text-gray-700">Card Number</label>
+                                        <input type="text" id="card-number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="1234 5678 9012 3456">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="expiry-date" class="block text-sm font-medium text-gray-700">Expiration Date</label>
+                                            <input type="text" id="expiry-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="MM/YY">
+                                        </div>
+                                        <div>
+                                            <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                                            <input type="text" id="cvv" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="123">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="name-on-card" class="block text-sm font-medium text-gray-700">Name on Card</label>
+                                        <input type="text" id="name-on-card" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="John Smith">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="save-card" name="save-card" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                        <label for="save-card" class="ml-2 block text-sm text-gray-900">
+                                            Save payment information for future purchases
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" onclick="processPayment()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Pay Now
+                        </button>
+                        <button type="button" onclick="closePaymentModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmationModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">Payment Successful!</h3>
+                                <div class="mt-2">
+                                    <p id="confirmation-text" class="text-sm text-gray-500">
+                                        Your tickets have been purchased successfully. A confirmation has been sent to your email.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" onclick="closeConfirmationModal()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            View Tickets
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot Interface -->
+        <div id="chatbotContainer" class="chatbot-container fixed bottom-20 right-6 w-full max-w-xs sm:max-w-md shadow-2xl rounded-lg border border-gray-300 transform opacity-0 scale-95 origin-bottom-right transition-all duration-200">
+            <div class="flex justify-between items-center bg-indigo-600 text-white px-4 py-3 rounded-t-lg">
+                <h3 class="font-medium text-lg">Park Assistant</h3>
+                <button id="closeChatbot" class="text-white hover:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="chatbotMessages" class="h-96 overflow-y-auto p-4 bg-gray-50">
+                <div class="chat-bubble mb-4">
+                    <div class="bg-indigo-100 rounded-lg p-3 max-w-xs">
+                        <p>Hello! 👋 I'm your Wonderland Park virtual assistant. Ask me about tickets, attractions, or park information!</p>
+                    </div>
+                </div>
+                <!-- Chat messages will be added here -->
+            </div>
+            <div class="border-t border-gray-200 p-4 bg-white">
+                <div class="flex items-center">
+                    <input id="chatInput" type="text" placeholder="Type your message..." class="flex-1 border border-gray-300 rounded-l-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <button id="sendMessage" class="bg-indigo-600 text-white px-4 py-2 rounded-r-lg hover:bg-indigo-700 transition duration-200">
+                        Send
+                    </button>
+                </div>
+                <div id="suggestedQuestions" class="mt-4 grid grid-cols-2 gap-2">
+                    <button onclick="sendSuggestedQuestion(this)" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 py-1 px-2 rounded-full transition duration-200">
+                        Ticket prices?
+                    </button>
+                    <button onclick="sendSuggestedQuestion(this)" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 py-1 px-2 rounded-full transition duration-200">
+                        Park hours?
+                    </button>
+                    <button onclick="sendSuggestedQuestion(this)" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 py-1 px-2 rounded-full transition duration-200">
+                        Special events?
+                    </button>
+                    <button onclick="sendSuggestedQuestion(this)" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 py-1 px-2 rounded-full transition duration-200">
+                        Ride restrictions?
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Wonderland Park</h3>
+                    <p class="text-gray-400">
+                        1775, 1st Floor, Cheera Khana, Nai Sarak<br>
+                        Delhi, 110006
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Attractions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Events</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">Phone: <a href="tel:+11234567890" class="hover:text-white">+1 (123) 456-7890</a></li>
+                        <li class="text-gray-400">Email: info@wonderlandpark.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2025 Wonderland Park. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Shopping cart functionality
+        let cart = [];
+        let cartTotal = 0;
+
+        function addToCart(type, price) {
+            const qtySelector = document.getElementById(`${type}-qty`);
+            const quantity = parseInt(qtySelector.value) || 1;
+            
+            // Find if item already exists in cart
+            const existingIndex = cart.findIndex(item => item.type === type);
+            
+            if (existingIndex >= 0) {
+                cart[existingIndex].quantity += quantity;
+                cart[existingIndex].total = cart[existingIndex].quantity * price;
+            } else {
+                cart.push({
+                    type,
+                    price,
+                    quantity,
+                    total: quantity * price
+                });
+            }
+            
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartEl = document.getElementById('cart');
+            const cartItemsEl = document.getElementById('cart-items');
+            const subtotalEl = document.getElementById('subtotal');
+            
+            // Clear current items
+            cartItemsEl.innerHTML = '';
+            
+            // Calculate new total
+            cartTotal = cart.reduce((sum, item) => sum + item.total, 0);
+            
+            // Add new items
+            cart.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'py-4 flex justify-between items-center';
+                
+                const itemName = getItemName(item.type);
+                
+                itemEl.innerHTML = `
+                    <div>
+                        <h4 class="font-medium text-gray-900">${itemName}</h4>
+                        <p class="text-sm text-gray-500">${item.quantity} x $${item.price.toFixed(2)}</p>
+                    </div>
+                    <div>
+                        <span class="font-medium text-gray-900">$${item.total.toFixed(2)}</span>
+                        <button onclick="removeFromCart('${item.type}')" class="ml-2 text-red-600 hover:text-red-800">
+                            Remove
+                        </button>
+                    </div>
+                `;
+                
+                cartItemsEl.appendChild(itemEl);
+            });
+            
+            // Update subtotal
+            subtotalEl.textContent = `$${cartTotal.toFixed(2)}`;
+            
+            // Show cart if not empty
+            if (cart.length > 0) {
+                cartEl.classList.remove('hidden');
+            } else {
+                cartEl.classList.add('hidden');
+            }
+        }
+
+        function getItemName(type) {
+            const names = {
+                'adult': 'Adult Day Pass',
+                'child': 'Child Day Pass',
+                'senior': 'Senior Day Pass'
+            };
+            return names[type] || type;
+        }
+
+        function removeFromCart(type) {
+            cart = cart.filter(item => item.type !== type);
+            updateCart();
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add tickets before proceeding to checkout.');
+                return;
+            }
+            
+            document.getElementById('paymentModal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
+
+        function processPayment() {
+            // Simulate payment processing
+            setTimeout(() => {
+                closePaymentModal();
+                
+                // Generate confirmation message
+                const confirmationText = document.getElementById('confirmation-text');
+                confirmationText.innerHTML = `
+                    <p>Your ${cart.reduce((sum, item) => sum + item.quantity, 0)} tickets have been purchased successfully!</p>
+                    <p class="mt-2">Total: $${cartTotal.toFixed(2)}</p>
+                    <p class="mt-2">A confirmation has been sent to your email.</p>
+                `;
+                
+                document.getElementById('confirmationModal').classList.remove('hidden');
+                
+                // Clear cart
+                cart = [];
+                updateCart();
+            }, 1500);
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        }
+
+        // Chatbot functionality
+        const chatbotFloatingButton = document.getElementById('chatbotFloatingButton');
+        const closeChatbot = document.getElementById('closeChatbot');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessageBtn = document.getElementById('sendMessage');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotContainer = document.getElementById('chatbotContainer');
+
+        // Toggle chatbot visibility
+        chatbotFloatingButton.addEventListener('click', () => {
+            chatbotContainer.classList.toggle('opacity-0');
+            chatbotContainer.classList.toggle('scale-95');
+            chatbotContainer.classList.toggle('opacity-100');
+            chatbotContainer.classList.toggle('scale-100');
+        });
+
+        closeChatbot.addEventListener('click', () => {
+            chatbotContainer.classList.add('opacity-0');
+            chatbotContainer.classList.add('scale-95');
+            chatbotContainer.classList.remove('opacity-100');
+            chatbotContainer.classList.remove('scale-100');
+        });
+
+        sendMessageBtn.addEventListener('click', sendChatMessage);
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+
+        function sendSuggestedQuestion(button) {
+            chatInput.value = button.textContent.replace('?', '');
+            sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addChatMessage(message, 'user');
+            
+            // Clear input
+            chatInput.value = '';
+            
+            // Simulate bot response after a delay
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addChatMessage(response, 'bot');
+            }, 1000);
+        }
+
+        function addChatMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-bubble mb-4 flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `rounded-lg p-3 max-w-xs ${sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-indigo-100'}`;
+            bubbleDiv.textContent = message;
+            
+            messageDiv.appendChild(bubbleDiv);
+            chatbotMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function getBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('price') || lowerMessage.includes('ticket') || lowerMessage.includes('cost')) {
+                return "Ticket prices are:\n- Adult Day Pass: Rs400\n- Child Day Pass: Rs200 (ages 3-12)\n- Senior Day Pass: Rs300 (65+)\nYou can purchase tickets directly on this page!";
+            } else if (lowerMessage.includes('hour') || lowerMessage.includes('open') || lowerMessage.includes('close')) {
+                return "Current park hours:\nMonday-Friday: 10AM - 8PM\nSaturday-Sunday: 9AM - 9PM\nExtended hours during summer season.";
+            } else if (lowerMessage.includes('event') || lowerMessage.includes('special')) {
+                return "Upcoming events:\n- Fireworks Spectacular (July 4th)\n- Halloween Spooktacular (October weekends)\n- Winter Wonderland (December)\nCheck our Events page for details!";
+            } else if (lowerMessage.includes('ride') || lowerMessage.includes('attraction')) {
+                return "Our park has over 50 rides and attractions! Some popular ones include:\n- Thunder Mountain roller coaster\n- Fantasy River boat ride\n- Space Adventure 3D simulator\nAll rides have height restrictions for safety.";
+            } else if (lowerMessage.includes('food') || lowerMessage.includes('eat')) {
+                return "We have dining options throughout the park:\n- Main Plaza Food Court (burgers, pizza, etc.)\n- International Flavors (Asian, Mexican, Italian)\n- Kid-Friendly Snack Bars\n- Fine Dining at The Grand Pavilion";
+            } else if (lowerMessage.includes('help') || lowerMessage.includes('assistance')) {
+                return "I can help with:\n- Ticket prices and purchases\n- Park hours & directions\n- Ride information\n- Special events\nJust ask me anything about Wonderland Park!";
+            } else {
+                return "I'm happy to help with any questions about Wonderland Park! Please try asking about ticket prices, park hours, special events, or attractions.";
+            }
+        }
+
+        // Show cart on initial load if there are items
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCart();
+        });
+    </script>
+</body>
+</html>
